@@ -7,8 +7,9 @@ port=$(env | grep _TCP_PORT | cut -d = -f 2)
 
 echo -n "waiting for TCP connection to $host:$port..."
 
-while ! nc -w 1 $host $port 2>/dev/null
-do
+# See http://tldp.org/LDP/abs/html/devref1.html for description of this syntax.
+# https://github.com/dominionenterprises/tol-api-php/blob/master/tests/provisioning/set-env.sh
+while ! exec 6<>/dev/tcp/$host/$port; do
   echo -n .
   sleep 1
 done
